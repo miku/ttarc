@@ -1,6 +1,6 @@
 # TikTok archiver (ttarc)
 
-Inspired by *tiktok-feed* by [CorentinB](https://github.com/CorentinB/).
+Inspiration: *tiktok-feed* by [CorentinB](https://github.com/CorentinB/).
 
 Minimalistic TikTok archival tool using
 [https://m.tiktok.com/node/share/trending](https://m.tiktok.com/node/share/trending).
