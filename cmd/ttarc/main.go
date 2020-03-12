@@ -25,7 +25,7 @@ var (
 	userAgent       = flag.String("ua", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36", "user agent")
 	verbose         = flag.Bool("verbose", false, "be verbose")
 	bestEffort      = flag.Bool("b", false, "ignore wget errors, just log them")
-	logFile         = flag.String("log", "", "log to stdout, if empty")
+	logFile         = flag.String("log", "", "log filename, log to stdout, if empty")
 	showVersion     = flag.Bool("version", false, "show version and exit")
 
 	Version   = "0.1.1"
