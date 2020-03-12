@@ -25,10 +25,19 @@ var (
 	verbose         = flag.Bool("verbose", false, "be verbose")
 	bestEffort      = flag.Bool("b", false, "ignore wget errors, just log them")
 	logFile         = flag.String("log", "", "log to stdout, if empty")
+	showVersion     = flag.Bool("version", false, "show version and exit")
+
+	Version   = "dev"
+	Buildtime = ""
 )
 
 func main() {
 	flag.Parse()
+
+	if *showVersion {
+		fmt.Printf("ttarc %s", Version, Buildtime)
+		os.Exit(0)
+	}
 
 	if *logFile != "" {
 		f, err := os.OpenFile(*logFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
