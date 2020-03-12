@@ -1,3 +1,5 @@
+// A simple tool that will use wget to download TikTok trending videos (only)
+// and save them into WARC files with structured names.
 package main
 
 import (
@@ -15,6 +17,89 @@ import (
 
 	"github.com/sethgrid/pester"
 )
+
+var (
+	directoryPrefix = flag.String("P", ".", "output directory")
+	warcName        = flag.String("f", fmt.Sprintf("ttarc-trending-%s", time.Now().Format("20060102150405")), "basename for warc file")
+	userAgent       = flag.String("ua", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36", "user agent")
+	verbose         = flag.Bool("verbose", false, "be verbose")
+	bestEffort      = flag.Bool("b", false, "ignore wget errors, just log them")
+	logFile         = flag.String("log", "", "log to stdout, if empty")
+)
+
+func main() {
+	flag.Parse()
+
+	if *logFile != "" {
+		f, err := os.OpenFile(*logFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer f.Close()
+		log.SetOutput(f)
+	}
+
+	trending := "https://m.tiktok.com/node/share/trending"
+	req, err := http.NewRequest("GET", trending, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	req.Header.Set("User-Agent", *userAgent)
+	resp, err := pester.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	var (
+		buf     bytes.Buffer
+		payload Trending
+	)
+	r := io.TeeReader(resp.Body, &buf)
+	dec := json.NewDecoder(r)
+	if err := dec.Decode(&payload); err != nil {
+		log.Fatal(err)
+	}
+
+	f, err := ioutil.TempFile("", "ttarc-tmp-")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		f.Close()
+		os.Remove(f.Name())
+	}()
+	if _, err := fmt.Fprintln(f, trending); err != nil {
+		log.Fatal(err)
+	}
+	for _, item := range payload.Body.ItemList {
+		if _, err := fmt.Fprintln(f, item.ContentUrl); err != nil {
+			log.Fatal(err)
+		}
+	}
+	cmd := exec.Command("wget",
+		"-O", "/dev/null",
+		"--directory-prefix", *directoryPrefix,
+		"--waitretry", "60",
+		"--random-wait",
+		"--warc-file", *warcName,
+		"--warc-cdx", *warcName,
+		"--input-file", f.Name())
+	if *verbose {
+		log.Println(cmd)
+	}
+	b, err := cmd.CombinedOutput()
+	if err != nil {
+		if *bestEffort {
+			log.Println(err)
+		} else {
+			log.Fatal(err)
+		}
+	}
+	if *verbose {
+		log.Println(string(b))
+	}
+}
 
 // Trending was generated via https://github.com/bemasher/JSONGen from
 // https://m.tiktok.com/node/share/trending.
@@ -64,80 +149,4 @@ type Trending struct {
 	} `json:"body"`
 	ErrMsg     string `json:"errMsg"`
 	StatusCode int64  `json:"statusCode"`
-}
-
-var (
-	directoryPrefix = flag.String("P", ".", "output directory")
-	warcName        = flag.String("f", fmt.Sprintf("ttarc-%s", time.Now().Format("20060102150405")), "basename for warc file")
-	userAgent       = flag.String("ua", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36", "user agent")
-	verbose         = flag.Bool("verbose", false, "be verbose")
-	bestEffort      = flag.Bool("b", false, "ignore wget errors, just log them")
-)
-
-func main() {
-	flag.Parse()
-	trending := "https://m.tiktok.com/node/share/trending"
-	req, err := http.NewRequest("GET", trending, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	req.Header.Set("User-Agent", *userAgent)
-	resp, err := pester.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-
-	var (
-		buf     bytes.Buffer
-		payload Trending
-	)
-	r := io.TeeReader(resp.Body, &buf)
-	dec := json.NewDecoder(r)
-	if err := dec.Decode(&payload); err != nil {
-		log.Fatal(err)
-	}
-
-	f, err := ioutil.TempFile("", "ttarc-tmp-")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer func() {
-		if err := f.Close(); err != nil {
-			log.Printf("close failed: %v", err)
-		}
-		if err := os.Remove(f.Name()); err != nil {
-			log.Printf("cleanup failed: %v", err)
-		}
-	}()
-	if _, err := fmt.Fprintln(f, trending); err != nil {
-		log.Fatal(err)
-	}
-	for _, item := range payload.Body.ItemList {
-		if _, err := fmt.Fprintln(f, item.ContentUrl); err != nil {
-			log.Fatal(err)
-		}
-	}
-	cmd := exec.Command("wget",
-		"-O", "/dev/null",
-		"--directory-prefix", *directoryPrefix,
-		"--waitretry", "60",
-		"--random-wait",
-		"--warc-file", *warcName,
-		"--warc-cdx", *warcName,
-		"--input-file", f.Name())
-	if *verbose {
-		log.Println(cmd)
-	}
-	b, err := cmd.CombinedOutput()
-	if err != nil {
-		if *bestEffort {
-			log.Println(err)
-		} else {
-			log.Fatal(err)
-		}
-	}
-	if *verbose {
-		log.Println(string(b))
-	}
 }
