@@ -27,7 +27,8 @@ var (
 	logFile         = flag.String("log", "", "log to stdout, if empty")
 	showVersion     = flag.Bool("version", false, "show version and exit")
 
-	Version   = "dev"
+	Version   = "0.1.0"
+	Commit    = ""
 	Buildtime = ""
 )
 
@@ -35,7 +36,7 @@ func main() {
 	flag.Parse()
 
 	if *showVersion {
-		fmt.Printf("ttarc %s %s\n", Version, Buildtime)
+		fmt.Printf("ttarc %s %s %s\n", Version, Commit, Buildtime)
 		os.Exit(0)
 	}
 
@@ -93,6 +94,7 @@ func main() {
 		"--random-wait",
 		"--warc-file", *warcName,
 		"--warc-cdx", *warcName,
+		"--warc-header", fmt.Sprintf("generator: ttarc %s %s %s", Version, Commit, Buildtime),
 		"--input-file", f.Name(),
 	}
 	if *logFile != "" {
