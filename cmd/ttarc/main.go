@@ -77,14 +77,19 @@ func main() {
 			log.Fatal(err)
 		}
 	}
-	cmd := exec.Command("wget",
+	opts := []string{
 		"-O", "/dev/null",
 		"--directory-prefix", *directoryPrefix,
 		"--waitretry", "60",
 		"--random-wait",
 		"--warc-file", *warcName,
 		"--warc-cdx", *warcName,
-		"--input-file", f.Name())
+		"--input-file", f.Name(),
+	}
+	if *logFile != "" {
+		opts = append(opts, []string{"-o", *logFile}...)
+	}
+	cmd := exec.Command("wget", opts...)
 	if *verbose {
 		log.Println(cmd)
 	}
