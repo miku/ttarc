@@ -35,7 +35,7 @@ func main() {
 	flag.Parse()
 
 	if *showVersion {
-		fmt.Printf("ttarc %s", Version, Buildtime)
+		fmt.Printf("ttarc %s %s\n", Version, Buildtime)
 		os.Exit(0)
 	}
 
