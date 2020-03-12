@@ -71,6 +71,7 @@ var (
 	warcName        = flag.String("f", fmt.Sprintf("ttarc-%s", time.Now().Format("20060102150405")), "basename for warc file")
 	userAgent       = flag.String("ua", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36", "user agent")
 	verbose         = flag.Bool("verbose", false, "be verbose")
+	bestEffort      = flag.Bool("b", false, "ignore wget errors, just log them")
 )
 
 func main() {
@@ -118,6 +119,7 @@ func main() {
 		}
 	}
 	cmd := exec.Command("wget",
+		"-O", "/dev/null",
 		"--directory-prefix", *directoryPrefix,
 		"--waitretry", "60",
 		"--random-wait",
@@ -129,7 +131,11 @@ func main() {
 	}
 	b, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Fatal(err)
+		if *bestEffort {
+			log.Println(err)
+		} else {
+			log.Fatal(err)
+		}
 	}
 	if *verbose {
 		log.Println(string(b))
