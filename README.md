@@ -31,7 +31,7 @@ ttarc-trending-20200312214721.warc
 ```
 
 This can be put into cron, e.g. to be run every 5 minutes - which would
-accumulate 5GB per day, or 150GB per month or video content.
+accumulate 5GB per day, or 150GB per month of video content.
 
 ```cron
 */5 * * * * /usr/local/bin/ttarc -P /tmp/ttarc -log /tmp/ttarc/ttarc.log
