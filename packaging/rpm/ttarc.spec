@@ -38,5 +38,5 @@ rm -rf %{_topdir}/BUILD/%{name}
 
 %changelog
 
-* Thu Marc 12 2020 Martin Czygan
+* Thu Mar 12 2020 Martin Czygan
 - 0.1.0 release
