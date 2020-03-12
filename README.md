@@ -25,3 +25,22 @@ accumulate 5GB per day, or 150GB per month or video content.
 ```cron
 */5 * * * * /usr/local/bin/ttarc -P /tmp/ttarc -log /tmp/ttarc/ttarc.log
 ```
+
+## Usage
+
+```
+Usage of ttarc:
+  -P string
+        output directory (default ".")
+  -b    ignore wget errors, just log them
+  -f string
+        basename for warc file (default "ttarc-trending-20200312224313")
+  -log string
+        log to stdout, if empty
+  -ua string
+        user agent (default "Mozilla/5.0 (Windows NT 10.0; ... )
+  -verbose
+        be verbose
+  -version
+        show version and exit
+```
