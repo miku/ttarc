@@ -10,6 +10,15 @@ into [WARC via
 wget](https://www.archiveteam.org/index.php?title=Wget_with_WARC_output) (1.14
 or higher).
 
+## Install
+
+```
+$ go get github.com/miku/cmd/ttarc/...
+```
+
+> or use some [Linux packages](https://github.com/miku/ttarc/releases) (there's
+> an [armhf](https://askubuntu.com/a/518182/5079) [version](https://github.com/miku/ttarc/releases/download/v0.1.1/ttarc_0.1.1_armhf.deb) for an SBC)
+
 ```
 $ ttarc
 $ ls -lah
