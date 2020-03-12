@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"time"
 
 	"github.com/sethgrid/pester"
@@ -47,6 +48,15 @@ func main() {
 		}
 		defer f.Close()
 		log.SetOutput(f)
+	}
+
+	if _, err := os.Stat(*directoryPrefix); os.IsNotExist(err) {
+		if *verbose {
+			log.Printf("creating output directory: %s", *directoryPrefix)
+		}
+		if err := os.MkdirAll(*directoryPrefix, 0775); err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	trending := "https://m.tiktok.com/node/share/trending"
@@ -89,11 +99,10 @@ func main() {
 	}
 	opts := []string{
 		"-O", "/dev/null",
-		"--directory-prefix", *directoryPrefix,
 		"--waitretry", "60",
 		"--random-wait",
-		"--warc-file", *warcName,
-		"--warc-cdx", *warcName,
+		"--warc-file", filepath.Join(*directoryPrefix, *warcName),
+		"--warc-cdx", filepath.Join(*directoryPrefix, *warcName),
 		"--warc-header", fmt.Sprintf("generator: ttarc %s %s %s", Version, Commit, Buildtime),
 		"--input-file", f.Name(),
 	}
