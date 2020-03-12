@@ -1,6 +1,6 @@
 Summary:    TikTok trending to WARC.
 Name:       ttarc
-Version:    0.1.0
+Version:    0.1.1
 Release:    0
 License:    GPL
 ExclusiveArch:  x86_64

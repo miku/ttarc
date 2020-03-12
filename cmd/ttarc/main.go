@@ -28,7 +28,7 @@ var (
 	logFile         = flag.String("log", "", "log to stdout, if empty")
 	showVersion     = flag.Bool("version", false, "show version and exit")
 
-	Version   = "0.1.0"
+	Version   = "0.1.1"
 	Commit    = ""
 	Buildtime = ""
 )
