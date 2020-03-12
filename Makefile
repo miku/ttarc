@@ -18,8 +18,8 @@ all: $(TARGETS)
 .PHONY: clean
 clean:
 	rm -f $(TARGETS)
-	rm -r $(PKGNAME)_*.deb
-	rm -r $(PKGNAME)*.rpm
+	rm -f $(PKGNAME)_*.deb
+	rm -f $(PKGNAME)*.rpm
 
 .PHONY: deb
 deb: all
