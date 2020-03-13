@@ -54,3 +54,7 @@ Usage of ttarc:
   -version
         show version and exit
 ```
+
+## TODO
+
+* [ ] broader scope
