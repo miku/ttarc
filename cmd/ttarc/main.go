@@ -59,8 +59,8 @@ func main() {
 		}
 	}
 
-	trending := "https://m.tiktok.com/node/share/trending"
-	req, err := http.NewRequest("GET", trending, nil)
+	link := "https://m.tiktok.com/node/share/trending"
+	req, err := http.NewRequest("GET", link, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -72,12 +72,12 @@ func main() {
 	defer resp.Body.Close()
 
 	var (
-		buf     bytes.Buffer
-		payload Trending
+		buf      bytes.Buffer
+		trending Trending
 	)
 	r := io.TeeReader(resp.Body, &buf)
 	dec := json.NewDecoder(r)
-	if err := dec.Decode(&payload); err != nil {
+	if err := dec.Decode(&trending); err != nil {
 		log.Fatal(err)
 	}
 
@@ -89,10 +89,10 @@ func main() {
 		f.Close()
 		os.Remove(f.Name())
 	}()
-	if _, err := fmt.Fprintln(f, trending); err != nil {
+	if _, err := fmt.Fprintln(f, link); err != nil {
 		log.Fatal(err)
 	}
-	for _, item := range payload.Body.ItemList {
+	for _, item := range trending.Body.ItemList {
 		if _, err := fmt.Fprintln(f, item.ContentUrl); err != nil {
 			log.Fatal(err)
 		}
