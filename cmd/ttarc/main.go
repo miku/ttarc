@@ -21,16 +21,20 @@ import (
 
 var (
 	directoryPrefix = flag.String("P", ".", "output directory")
-	warcName        = flag.String("f", fmt.Sprintf("ttarc-trending-%s", time.Now().Format("20060102150405")), "basename for warc file")
-	userAgent       = flag.String("ua", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36", "user agent")
-	verbose         = flag.Bool("verbose", false, "be verbose")
-	bestEffort      = flag.Bool("b", false, "ignore wget errors, just log them")
-	logFile         = flag.String("log", "", "log filename, log to stdout, if empty")
-	showVersion     = flag.Bool("version", false, "show version and exit")
+	warcName        = flag.String("f", fmt.Sprintf("ttarc-trending-%s", time.Now().Format("20060102150405")),
+		"basename for warc file")
+	userAgent   = flag.String("ua", DefaultUserAgent, "user agent")
+	verbose     = flag.Bool("verbose", false, "be verbose")
+	bestEffort  = flag.Bool("b", false, "ignore wget errors, just log them")
+	logFile     = flag.String("log", "", "log filename, log to stdout, if empty")
+	showVersion = flag.Bool("version", false, "show version and exit")
 
-	Version   = "0.1.1"
-	Commit    = ""
-	Buildtime = ""
+	Version          = "0.1.1"
+	Commit           = ""
+	Buildtime        = ""
+	Generator        = fmt.Sprintf("generator: ttarc %s %s %s", Version, Commit, Buildtime)
+	DefaultUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+	link             = "https://m.tiktok.com/node/share/trending"
 )
 
 func main() {
@@ -40,7 +44,6 @@ func main() {
 		fmt.Printf("ttarc %s %s %s\n", Version, Commit, Buildtime)
 		os.Exit(0)
 	}
-
 	if *logFile != "" {
 		f, err := os.OpenFile(*logFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 		if err != nil {
@@ -49,7 +52,6 @@ func main() {
 		defer f.Close()
 		log.SetOutput(f)
 	}
-
 	if _, err := os.Stat(*directoryPrefix); os.IsNotExist(err) {
 		if *verbose {
 			log.Printf("creating output directory: %s", *directoryPrefix)
@@ -58,8 +60,6 @@ func main() {
 			log.Fatal(err)
 		}
 	}
-
-	link := "https://m.tiktok.com/node/share/trending"
 	req, err := http.NewRequest("GET", link, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -70,7 +70,6 @@ func main() {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-
 	var (
 		buf      bytes.Buffer
 		trending Trending
@@ -80,7 +79,6 @@ func main() {
 	if err := dec.Decode(&trending); err != nil {
 		log.Fatal(err)
 	}
-
 	f, err := ioutil.TempFile("", "ttarc-tmp-")
 	if err != nil {
 		log.Fatal(err)
@@ -103,7 +101,7 @@ func main() {
 		"--random-wait",
 		"--warc-file", filepath.Join(*directoryPrefix, *warcName),
 		"--warc-cdx", filepath.Join(*directoryPrefix, *warcName),
-		"--warc-header", fmt.Sprintf("generator: ttarc %s %s %s", Version, Commit, Buildtime),
+		"--warc-header", Generator,
 		"--input-file", f.Name(),
 	}
 	if *logFile != "" {
