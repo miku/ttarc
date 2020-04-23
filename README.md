@@ -5,7 +5,7 @@ Inspiration: *tiktok-feed* by [CorentinB](https://github.com/CorentinB/).
 Minimalistic TikTok archival tool using
 [https://m.tiktok.com/node/share/trending](https://m.tiktok.com/node/share/trending).
 
-Collects the trending JSON document and linked (mp4) video clips and puts the
+Collects the trending JSON document and linked (mp4) video clips and puts them
 into [WARC via
 wget](https://www.archiveteam.org/index.php?title=Wget_with_WARC_output) (1.14
 or higher).
