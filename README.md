@@ -1,5 +1,7 @@
 # TikTok archiver (ttarc)
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/miku/ttarc)](https://goreportcard.com/report/github.com/miku/ttarc)
+
 Inspiration: *tiktok-feed* by [CorentinB](https://github.com/CorentinB/).
 
 Minimalistic TikTok archival tool using
