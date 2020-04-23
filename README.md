@@ -60,8 +60,13 @@ Usage of ttarc:
 ## TODO
 
 * [ ] broader scope
+* [ ] optimal tile
 
 ## Stills
+
+[Extracted](extra/videostills.py] via
+[warcio](https://github.com/webrecorder/warcio),
+[ffmpeg](https://www.ffmpeg.org/) and [imagemagick](https://imagemagick.org/).
 
 ![](static/output10.png)
 
