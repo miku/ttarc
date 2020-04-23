@@ -64,7 +64,7 @@ Usage of ttarc:
 
 ## Stills
 
-[Extracted](extra/videostills.py] via
+[Extracted](extra/videostills.py) via
 [warcio](https://github.com/webrecorder/warcio),
 [ffmpeg](https://www.ffmpeg.org/) and [imagemagick](https://imagemagick.org/).
 
