@@ -1,0 +1,6 @@
+*ttarc-trending*
+*.cdx
+*.warc
+*.warc.gz
+*.jpg
+output*.png

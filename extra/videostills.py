@@ -33,7 +33,7 @@ if __name__ == "__main__":
                 if not payload_digest:
                     continue
 
-                hv = payload_digest.split(':')[1]
+                hv = payload_digest.split(":")[1]
                 if hv in seen:
                     continue
                 seen.add(hv)
@@ -45,20 +45,11 @@ if __name__ == "__main__":
                 dst = "{}{}.jpg".format(args.prefix, hv)
                 if os.path.exists(dst):
                     continue
-                # Generate a still.
-                # ffmpeg -ss 1 -i  -t 00:04 Linus-Torvalds-Nvidia_%03d.png
-                output = shellout(""" ffmpeg -hide_banner -loglevel panic -y -ss 1 -i {video} -vframes 1 -f image2 {output} """, video=tf.name)
-                # output = shellout(""" ffmpeg -hide_banner -loglevel panic -y -ss 1 -i {video} -vframes 1 -s 480x300 -f image2 {output} """, video=tf.name)
-                os.rename(output, dst)
-                os.remove(tf.name) # remove extracted video
 
-                # sha1 = hashlib.sha1(data)
-                # print(
-                #     "{}\tsha1:{}".format(
-                #         rh.get("WARC-Payload-Digest"),
-                #         base64.b32encode(sha1.digest()).decode("utf-8"),
-                #     )
-                # )
-                # print(record.rec_headers.get_header('WARC-Target-URI')[:50] + "...")
-                # for attr in ['content_stream', 'content_type', 'digest_checker', 'format', 'http_headers', 'length', 'payload_length', 'raw_stream', 'rec_headers', 'rec_type']:
-                #     print(attr, '=>', getattr(record, attr))
+                # Generate a still.
+                output = shellout(
+                    """ ffmpeg -hide_banner -loglevel panic -y -ss 1 -i {video} -vframes 1 -f image2 {output} """,
+                    video=tf.name,
+                )
+                os.rename(output, dst)
+                os.remove(tf.name)  # remove extracted video
