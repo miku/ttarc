@@ -10,6 +10,8 @@ into [WARC via
 wget](https://www.archiveteam.org/index.php?title=Wget_with_WARC_output) (1.14
 or higher).
 
+![](static/pix.png)
+
 ## Install
 
 ```
