@@ -14,6 +14,8 @@ or higher).
 
 ![](static/pix.png)
 
+NOTE: As of 2020-04-23 5PM CET, the [endpoint](https://m.tiktok.com/node/share/trending) returns an empty list only.
+
 ## Install
 
 ```
@@ -63,6 +65,9 @@ Usage of ttarc:
 
 * [ ] broader scope
 * [ ] optimal tile
+* [ ] save user profiles, e.g. [anna](https://www.tiktok.com/node/share/user/@anna)
+* [ ] the [discover](https://www.tiktok.com/node/share/discover) list
+* [ ] cycle through top 5000 english words and make a [frequency](https://www.tiktok.com/node/share/tag/frequency) list
 
 ## Stills
 
