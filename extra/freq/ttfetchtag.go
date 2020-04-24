@@ -95,7 +95,7 @@ func FetchLink(link, filename string) error {
 		return err
 	}
 	defer resp.Body.Close()
-	return WriteFileReader(filename, resp.Body, 0755)
+	return WriteFileReader(filename, resp.Body, 0644)
 }
 
 func main() {
