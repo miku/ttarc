@@ -71,6 +71,7 @@ Usage of ttarc:
 * [ ] save user profiles, e.g. [anna](https://www.tiktok.com/node/share/user/@anna)
 * [ ] the [discover](https://www.tiktok.com/node/share/discover) list
 * [ ] cycle through top 5000 english words and make a [frequency](https://www.tiktok.com/node/share/tag/frequency) list
+* [ ] video id, [6840824663585639686](https://www.tiktok.com/@lzz03/video/6840824663585639686)
 
 ## Stills
 
