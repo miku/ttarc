@@ -1,5 +1,9 @@
 # TikTok archiver (ttarc)
 
+NOTE: As of 2020-04-23 5PM CET, the trending [endpoint](https://m.tiktok.com/node/share/trending) returns an empty list only. Hence, as is, this program does not fetch any data.
+
+----
+
 [![Go Report Card](https://goreportcard.com/badge/github.com/miku/ttarc)](https://goreportcard.com/report/github.com/miku/ttarc)
 
 Inspiration: *tiktok-feed* by [CorentinB](https://github.com/CorentinB/).
@@ -14,7 +18,6 @@ or higher).
 
 ![](static/pix.png)
 
-NOTE: As of 2020-04-23 5PM CET, the [endpoint](https://m.tiktok.com/node/share/trending) returns an empty list only.
 
 ## Install
 
