@@ -19,3 +19,4 @@ ttarc_*.deb
 ttarc-*.rpm
 /packaging/deb/ttarc/usr
 /tmp/*
+/data/*
